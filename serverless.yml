@@ -1,0 +1,63 @@
+# Welcome to Serverless!
+#
+# This file is the main config file for your service.
+# It's very minimal at this point and uses default values.
+# You can always add more config options for more control.
+# We've included some commented out config examples here.
+# Just uncomment any of them to get that config option.
+#
+# For full config options, check the docs:
+#    docs.serverless.com
+#
+# Happy Coding!
+
+service: crossvpc # NOTE: update this with your service name
+
+# You can pin your service to only deploy with a specific Serverless version
+# Check out our docs for more details
+# frameworkVersion: "=X.X.X"
+
+provider:
+  name: aws
+  runtime: python3.6
+  stage: dev
+  region: ap-southeast-1
+  timeout: 120
+  role: 'arn:aws:iam::170027922938:role/lambda-s3-ssm-cloudwatch'
+
+plugins:
+  - serverless-python-requirements
+  - serverless-plugin-vpc-eni-cleanup
+
+custom:
+  pythonRequirements:
+    dockerizePip: non-linux
+  vpc:
+    sg:
+      subnetIds:
+        - 'subnet-202b1e44'
+        - 'subnet-f5247a83'
+      securityGroupIds:
+        - 'sg-a51159c2'
+    id:
+      subnetIds:
+        - 'subnet-50192c34'
+        - 'subnet-74580602'
+      securityGroupIds:
+        - 'sg-0a276f6d'
+  
+
+functions:
+  hello:
+    handler: handler.hello
+  mongoconnect-sg:
+    handler: mongo_connect.handler
+    vpc: ${self:custom.vpc.sg}
+    environment:
+      country: sg
+  mongoconnect-id:
+    handler: mongo_connect.handler
+    vpc: ${self:custom.vpc.id}
+    environment:
+      country: id
+      
