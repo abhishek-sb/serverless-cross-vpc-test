@@ -10,8 +10,8 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 config = {
-  'sg' : 'mongodb://<username>:<password>@prod-mongo-3.shopback.sg:27017',
-  'id' : 'mongodb://<username>:<password>@prod-mongo-3.shopback.co.id:27017'
+  'sg' : 'mongodb://productteam:pr0du3t#01@prod-mongo-3.shopback.sg:27017',
+  'id' : 'mongodb://productteam:pr0du3t#01@prod-mongo-3.shopback.co.id:27017'
 }
 
 # Set client 
